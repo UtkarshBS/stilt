@@ -1,0 +1,43 @@
+services:
+  airflow:
+    - "8080:8080"
+  postgres:
+    - "5432:5432"
+  redis:
+    - "6379:6379"
+  clickhouse:
+    - "8123:8123"
+  minio:
+    - "9000:9000"
+    - "9001:9001"
+  zookeeper:
+    - "2181:2181"
+  kafka:
+    - "9092:9092"
+  nifi:
+    - "8082:8080"
+  spark-master:
+    - "7077:7077"
+    - "8083:8080"
+  spark-worker:
+    - "8081:8081"
+  flink-jobmanager:
+    - "8084:8081"
+  flink-taskmanager:
+    - "8085:8081"
+  dagster:
+    - "3000:3000"
+  trino:
+    - "8086:8081"
+  elasticsearch:
+    - "9200:9200"
+  kibana:
+    - "5601:5601"
+  superset:
+    - "8088:8088"
+  metabase:
+    - "3001:3000"
+  grafana:
+    - "3002:3000"
+  prometheus:
+    - "9090:9090"

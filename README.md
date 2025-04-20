@@ -29,7 +29,7 @@
 
 1. **Clone the repo**
    ```bash
-   git clone git@github.com:YourUser/stilt.git
+   git clone git@github.com:UtkarshBS/stilt.git
    cd stilt
    ```
 
@@ -83,7 +83,7 @@ docker compose down -v
 
 ## 📄 License
 
-This project is licensed under the Apache 2.0 License. See [LICENSE](https://github.com/UtkarshBS/stilt/blob/main/LICENSE) for details.
+This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
 
 ## 🤝 Contributing
 

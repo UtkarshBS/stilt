@@ -1,6 +1,6 @@
 # Stilt
 
-**Stilt** is a lightweight data-platform orchestrator that can spin up a full stack of services locally via Docker Compose. It reads a declarative configuration, generates `docker-compose.yml` & `.env`, and brings up everything with a single command.
+**Stilt** is a lightweight local stack generator for Docker Compose. It reads a declarative configuration, generates `docker-compose.yml` and `.env`, and brings up the enabled services with a single command.
 
 ## 🚀 Features
 
@@ -8,7 +8,9 @@
 - **Port mappings** centrally managed in `config/ports.yaml`
 - **Enable/disable** any service via `plugins.conf`
 - **Automatic** `.env` generation with secure random secrets
-- **Single‑step** startup & teardown with `run.sh` or the `stilt` CLI
+- **Single‑step** startup & teardown with `run.sh`
+- **Bootstrap** prompt for Docker and Compose on supported systems
+- **Inline custom-image builds** executed by the Go deployment tool
 - **Built‑in** support for:
   - Airflow, Postgres, Redis  
   - ClickHouse, MinIO  
@@ -24,6 +26,7 @@
 
 - Go 1.20+  
 - Docker CE & Docker Compose v2+  
+- `run.sh` can install Docker and Compose on supported Linux, macOS, Windows, and WSL setups, preferring `yay`/`paru` on Arch-based systems
 
 ## 🛠 Installation
 
@@ -35,7 +38,7 @@
 
 2. **Build the CLI**
    ```bash
-   go build -o stilt cmd/main.go
+   go build -o stilt ./cmd
    ```
 
 3. **Configure services**
@@ -45,9 +48,18 @@
 
 ## ▶️ Quick Start (Local)
 
-Bring up the full platform:
+Bring up the default stream-processing stack:
 ```bash
 ./run.sh
+```
+
+The default Flink image includes `flink-sql-connector-kafka:5.0.0-2.2`. Jobs running inside the stack connect to Kafka at `kafka:9092`; applications running on the host use `localhost:9092`.
+
+Spark uses the Apache-maintained `apache/spark:3.5.8` image. Its Scala 2.12 build matches the Flink stack, and the standalone master is available to jobs at `spark://spark-master:7077`.
+
+Run the smoke-test suite for every enabled service. The suite waits for readiness, reports all failures instead of stopping at the first one, and includes an end-to-end Kafka-to-Flink SQL check:
+```bash
+./smoke-test.sh
 ```
 
 **Access your services**:
@@ -55,21 +67,25 @@ Bring up the full platform:
 docker compose ps --format "table {{.Service}}\t{{.Ports}}"
 ```
 Or point your browser to:
-- Airflow:   http://localhost:8080
-- MinIO:     http://localhost:9001
-- ClickHouse: http://localhost:8123
+- Flink JobManager: http://localhost:8084
 
 ## ⏹ Teardown
 
 ```bash
-docker compose down -v
+./stop.sh
+```
+
+Remove all Stilt containers, volumes, images, generated files, and local data:
+
+```bash
+./stop.sh --purge
 ```
 
 ## ⏬ Project Layout
 
 ```
 .
-├── cmd/                # CLI entry point and subcommands
+├── cmd/                # CLI entry point
 ├── config/             # service definitions & port mappings
 │   ├── services.yaml
 │   └── ports.yaml

@@ -1,0 +1,7 @@
+.env
+docker-compose.yml
+stilt
+.stilt-images
+data/
+logs/
+java-test/

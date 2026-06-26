@@ -15,6 +15,7 @@
   - Airflow, Postgres, Redis  
   - ClickHouse, MinIO  
   - Zookeeper & Kafka  
+  - Kafka UI
   - NiFi  
   - Spark & Flink  
   - Dagster, Trino  
@@ -67,6 +68,7 @@ Run the smoke-test suite for every enabled service. The suite waits for readines
 docker compose ps --format "table {{.Service}}\t{{.Ports}}"
 ```
 Or point your browser to:
+- Kafka UI: http://localhost:8087
 - Flink JobManager: http://localhost:8084
 
 ## ⏹ Teardown

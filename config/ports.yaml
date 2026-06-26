@@ -14,6 +14,8 @@ services:
     - "2181:2181"
   kafka:
     - "9092:29092"
+  kafka-ui:
+    - "8087:8080"
   nifi:
     - "8082:8443"
   spark-master:
